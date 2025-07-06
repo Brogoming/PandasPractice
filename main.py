@@ -1,5 +1,10 @@
 import pandas as pd
 
-coffee = pd.read_csv('./warmup-data/coffee.csv')
+bios = pd.read_csv('./olympic-data/bios.csv')
+bios_new = bios.copy() # creates a copy of the dataframe
 
-print(coffee.sort_values("Units Sold", ascending=False)) # you can sort by one or more columns (["Units Sold", "Coffee Type"]) and with ascending you can determine what direction each specific column is sorted [0, 1] (0 is for descending)
+bios_new['first_name'] = bios_new['name'].str.split(' ').str[0] # string operations
+bios_new['born_datetime'] = pd.to_datetime(bios_new['born_date']) # allows us to set the column to a date object column, you can also format the data as well
+bios_new['born_year'] = bios_new['born_datetime'].dt.year # we can do date operations based now that the 'born_datetime' column is a date object column
+
+print(bios_new.head())

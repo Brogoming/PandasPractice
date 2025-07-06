@@ -42,3 +42,54 @@ print(coffee.Day) # you can access specific columns by calling their name or put
 print(coffee.sort_values("Units Sold", ascending=False)) # you can sort by one or more columns (["Units Sold", "Coffee Type"]) and with ascending you can determine what direction each specific column is sorted [0, 1] (0 is for descending)
 coffee.index = coffee.Day # reassigns our index column
 ```
+- You can also iterate with every row with **df.iterrows()** but that would make viewing the data much slower.
+
+### Filtering Data
+```python
+import pandas as pd
+
+bios = pd.read_csv('./olympic-data/bios.csv')
+
+print(bios.loc[bios['height_cm'] > 215, ["name", "height_cm"]]) # grabs all athletes taller than 215cm
+print(bios[bios['height_cm'] > 215][["name", "height_cm"]]) # this also works
+print(bios[(bios['height_cm'] > 215) & (bios['born_country']=='USA')]) # You can also do multiple filters
+print(bios[bios['name'].str.contains('keith|patrick', case=False)]) # you can filter by data type value, in this case we only want the values that have either keith or patrick as the name (works with regex as by default the regex argument is True)
+print(bios.query('born_country == "USA" and born_city == "Seattle"')) # we can query our data, but it has to be in single quotes
+```
+
+### Editing Columns
+```python
+import pandas as pd
+import numpy as np
+
+coffee = pd.read_csv('./warmup-data/coffee.csv')
+
+# Add
+coffee['price'] = 4.99 # Creates a new column called price where the default value is 4.99
+coffee['new_price'] = np.where(coffee['Coffee Type']=='Espresso', 3.99, 5.99) # we use a numpy where function to add in our new column. The 1st arg is the condition, the 2nd is if the condition is true and the 3rd is if it is false
+coffee['revenue'] = coffee['Units Sold'] * coffee['new_price'] # basic math operations
+coffee['abbreviation'] = coffee['Coffee Type'].str[0:3] # string operations
+
+# Delete
+coffee.drop(columns=['price'], inplace=True) # To drop, not delete, a column you have to specify the columns param. If you only pass in a number it will drop, not delete, the index (row). Setting inplace=True will actually delete the column (or row depending on the param)
+
+# Edit
+coffee.rename(columns={'new_price': 'price'}, inplace=True) # allows us to rename the columns
+
+print(coffee.head())
+```
+- A caveat is if we want to make a new dataframe based on the one we have already created by editing the new dataframe it will also edit the older one. The new dataframe is essentially just pointing to the same dataframe as the old one. If you want to actually copy a dataframe you have to use **.copy()** function.`new_df = org_df.copy()`
+```python
+import pandas as pd
+
+bios = pd.read_csv('./olympic-data/bios.csv')
+bios_new = bios.copy() # creates a copy of the dataframe
+
+# Add
+bios_new['first_name'] = bios_new['name'].str.split(' ').str[0] # string operations
+bios_new['born_datetime'] = pd.to_datetime(bios_new['born_date']) # allows us to set the column to a date object column
+bios_new['born_year'] = bios_new['born_datetime'].dt.year # we can do date operations based now that the 'born_datetime' column is a date object column
+
+print(bios_new.head())
+```
+- We can also save the dataframe with `bios_new.to_csv('./olympic-data/bios_new.csv', index=False)`. By default, it will save the data with an extra index column so that is why we set index to False in this case
