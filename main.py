@@ -1,10 +1,7 @@
 import pandas as pd
 
-bios = pd.read_csv('./olympic-data/bios.csv')
-bios_new = bios.copy() # creates a copy of the dataframe
+results_numpy = pd.read_csv('./data/results.csv')
+results_arrow = pd.read_csv('./data/results.csv', engine='pyarrow', dtype_backend='pyarrow')
 
-bios_new['first_name'] = bios_new['name'].str.split(' ').str[0] # string operations
-bios_new['born_datetime'] = pd.to_datetime(bios_new['born_date']) # allows us to set the column to a date object column, you can also format the data as well
-bios_new['born_year'] = bios_new['born_datetime'].dt.year # we can do date operations based now that the 'born_datetime' column is a date object column
-
-print(bios_new.head())
+print(results_numpy.info(), '\n')
+print(results_arrow.info()) # This method explicitly assigns the data closer to its actual data type compared to the default way. Nothing fundamentally changes but if for example you want to mess with strings in the dataframe pyarrow is faster (better optimized)
