@@ -1,10 +1,15 @@
 # PandasPractice
 
+## Libraries
+- [pandas](https://pandas.pydata.org/docs/)
+- [matplotlib](https://matplotlib.org/)
+- [numpy](https://numpy.org/doc/stable/)
+
 ## Terms
 - Dataframe - Essentially a data table that has extra functionality
 - Aggregate - Formed or calculated by the combination of many separate units or items
  
-## Functions
+## Pandas Functions
 
 ### Accessing Data
 
@@ -43,7 +48,6 @@ olympicsData = pd.read_excel('./data/olympics-data.xlsx', sheet_name="results") 
 **.loc, .sort_values()**
 ```python
 import pandas as pd
-import numpy as np
 
 coffee = pd.read_csv('./warmup-data/coffee.csv')
 
@@ -97,7 +101,7 @@ print(coffee.head())
 ```
 - A caveat is if we want to make a new dataframe based on the one we have already created by editing the new dataframe it will also edit the older one. The new dataframe is essentially just pointing to the same dataframe as the old one. If you want to actually copy a dataframe you have to use **.copy()** function.`new_df = org_df.copy()`
 
-**.copy(), to_datetime(), .apply()**
+**.copy(), .to_datetime(), .apply()**
 
 ```python
 import pandas as pd
@@ -260,4 +264,58 @@ results_arrow = pd.read_csv('./data/results.csv', engine='pyarrow', dtype_backen
 
 print(results_numpy.info(), '\n')
 print(results_arrow.info()) # This method explicitly assigns the data closer to its actual data type compared to the default way. Nothing fundamentally changes but if for example you want to mess with strings in the dataframe pyarrow is faster (better optimized)
+```
+
+## matplotlib Functions
+
+### Basic Graphs
+#### Line Graph
+
+**.plot(), .show(), .title(), .xlabel(), .ylabel(), .figure(), .xticks(), .yticks(), .legend(), .savefig(), .show()**
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+x = [0,1,2,3,4]
+y = [0,2,4,6,8]
+x2 = np.arange(0, 4.5, 0.5)
+
+plt.figure(figsize=(5,4), dpi=150) # Resize the graph (dpi = pixels per inch)
+
+# Plotting the data
+plt.plot(x, y, label='2x', color='red', marker='.', linestyle='dashed', linewidth='2', markersize=12) # x (independent data) and y (dependent data) need to be 1D arrays
+plt.plot(x2[:6], x2[:6]**2, 'gv-', label='x^2') # another way of styling the graph
+plt.plot(x2[5:], x2[5:]**2, 'b^:', label='x^2') # The data can be split as long as it is still a 1D array
+
+# Title and labels
+plt.title('My First Graph', fontdict={'fontname': 'Comic Sans MS', 'fontsize': 20}) # Sets the title of the graph
+plt.xlabel('Independent', fontdict={'fontname': 'Times New Roman'}) # Sets the label of the x-axis
+plt.ylabel('Dependent') # Sets the label of the y-axis
+
+# Tick marks
+plt.xticks(range(0,10)) # Manually set the x-axis ticks
+plt.yticks(range(0,10)) # Manually set the y-axis ticks
+
+# Setting the legend, saving the graph, and showing the graph
+plt.legend() # gives us a legend that lists all the labels and their corresponding data
+plt.savefig('mygraph.png', dpi=300) # saves the graph as a png image
+plt.show() # This is what shows the graph, without it, we can't see the data
+```
+
+#### Bar Chart
+
+**.bar(), .set_hatch()**
+```python
+import matplotlib.pyplot as plt
+
+labels = ['A', 'B', 'C']
+values = [1,4,2]
+
+bars = plt.bar(labels, values) # creates a bar graph by passing in our x (labels) and y (values). Both have to be 1D Arrays
+
+patterns = ['/', 'O', '*']
+for bar in bars:
+	bar.set_hatch(patterns.pop(0)) # Set the hatch style (for fills)
+
+plt.show()
 ```

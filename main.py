@@ -1,7 +1,12 @@
-import pandas as pd
+import matplotlib.pyplot as plt
 
-results_numpy = pd.read_csv('./data/results.csv')
-results_arrow = pd.read_csv('./data/results.csv', engine='pyarrow', dtype_backend='pyarrow')
+labels = ['A', 'B', 'C']
+values = [1,4,2]
 
-print(results_numpy.info(), '\n')
-print(results_arrow.info()) # This method explicitly assigns the data closer to its actual data type compared to the default way. Nothing fundamentally changes but if for example you want to mess with strings in the dataframe pyarrow is faster (better optimized)
+bars = plt.bar(labels, values) # creates a bar graph by passing in our x (labels) and y (values). Both have to be 1D Arrays
+
+patterns = ['/', 'O', '*']
+for bar in bars:
+	bar.set_hatch(patterns.pop(0)) # Set the hatch style (for fills)
+
+plt.show()
