@@ -1,12 +1,20 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 
-labels = ['A', 'B', 'C']
-values = [1,4,2]
+gas = pd.read_csv('./data/gas_prices.csv')
 
-bars = plt.bar(labels, values) # creates a bar graph by passing in our x (labels) and y (values). Both have to be 1D Arrays
+plt.figure(figsize=(8,5))
 
-patterns = ['/', 'O', '*']
-for bar in bars:
-	bar.set_hatch(patterns.pop(0)) # Set the hatch style (for fills)
+plt.plot(gas['Year'], gas['USA'], 'r.-', label='USA')
+plt.plot(gas['Year'], gas['Canada'], 'b.-', label='Canada')
+plt.plot(gas['Year'], gas['South Korea'], 'g.-', label='South Korea')
+plt.plot(gas['Year'], gas['Australia'], 'y.-', label='Australia')
 
+plt.title('Gas Prices Over Time')
+plt.xlabel('Years')
+plt.ylabel('Dollars/Gallon')
+
+plt.legend()
+
+plt.xticks(gas['Year'][::3].tolist()+[2011]) # Gets every 3rd year and ends at 2011
 plt.show()
