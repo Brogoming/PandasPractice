@@ -1,20 +1,16 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-gas = pd.read_csv('./data/gas_prices.csv')
+fifa = pd.read_csv('./data/fifa_data.csv')
 
 plt.figure(figsize=(8,5))
 
-plt.plot(gas['Year'], gas['USA'], 'r.-', label='USA')
-plt.plot(gas['Year'], gas['Canada'], 'b.-', label='Canada')
-plt.plot(gas['Year'], gas['South Korea'], 'g.-', label='South Korea')
-plt.plot(gas['Year'], gas['Australia'], 'y.-', label='Australia')
+left = fifa.loc[fifa['Preferred Foot'] == 'Left'].count()[0]
+right = fifa.loc[fifa['Preferred Foot'] == 'Right'].count()[0]
 
-plt.title('Gas Prices Over Time')
-plt.xlabel('Years')
-plt.ylabel('Dollars/Gallon')
+plt.pie([left, right], labels=['Left', 'Right'], colors=['#ff0000', '#00ffff'], autopct='%.2f %%')
+# Pass in a list of numeric values, labels of each category, colors of each category, and a string of how to format the percentages
 
-plt.legend()
+plt.title('Foot Preference of FIFA Players')
 
-plt.xticks(gas['Year'][::3].tolist()+[2011]) # Gets every 3rd year and ends at 2011
 plt.show()

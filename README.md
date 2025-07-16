@@ -321,7 +321,7 @@ plt.show()
 ```
 
 ### Examples
-#### Line Graph
+#### Line Graph (gas prices)
 
 ```python
 import matplotlib.pyplot as plt
@@ -346,7 +346,41 @@ plt.xticks(gas['Year'][::3].tolist()+[2011]) # Gets every 3rd year and ends at 2
 plt.show()
 ```
 
-#### Histogram
+#### Histogram (fifa)
 ```python
+import matplotlib.pyplot as plt
+import pandas as pd
 
+fifa = pd.read_csv('./data/fifa_data.csv')
+
+plt.figure(figsize=(8,5))
+bins = range(40,100,10)
+plt.hist(fifa["Overall"], bins=bins, color='#ff00dd') # histogram that shows the number of players that have an overall score between the bins
+plt.xticks(bins)
+
+plt.title('Distribution of Player Skills in FIFA 2018')
+plt.xlabel('Skill Level')
+plt.ylabel('Number of Players')
+
+plt.show()
+```
+
+#### Pie Chart (fifa)
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+fifa = pd.read_csv('./data/fifa_data.csv')
+
+plt.figure(figsize=(8,5))
+
+left = fifa.loc[fifa['Preferred Foot'] == 'Left'].count()[0]
+right = fifa.loc[fifa['Preferred Foot'] == 'Right'].count()[0]
+
+plt.pie([left, right], labels=['Left', 'Right'], colors=['#ff0000', '#00ffff'], autopct='%.2f %%')
+# Pass in a list of numeric values, labels of each category, colors of each category, and a string of how to format the percentages
+
+plt.title('Foot Preference of FIFA Players')
+
+plt.show()
 ```
