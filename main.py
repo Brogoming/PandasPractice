@@ -3,14 +3,17 @@ import pandas as pd
 
 fifa = pd.read_csv('./data/fifa_data.csv')
 
-plt.figure(figsize=(8,5))
+barcelona = fifa.loc[fifa["Club"] == 'FC Barcelona']['Overall']
+madrid = fifa.loc[fifa["Club"] == 'Real Madrid']['Overall']
+revs = fifa.loc[fifa["Club"] == 'New England Revolution']['Overall']
+labels = ['FC Barcelona', 'Real Madrid', 'New England Revolution']
 
-left = fifa.loc[fifa['Preferred Foot'] == 'Left'].count()[0]
-right = fifa.loc[fifa['Preferred Foot'] == 'Right'].count()[0]
+boxes = plt.boxplot([barcelona, madrid, revs], tick_labels=labels, patch_artist=True, medianprops={'linewidth': 2}) # x needs to be a list of integer lists
+for box in boxes['boxes']:
+	box.set(color='#4286f4', linewidth=2) # set edge color
+	box.set(facecolor='#e0e0e0') # change the inside of the box
 
-plt.pie([left, right], labels=['Left', 'Right'], colors=['#ff0000', '#00ffff'], autopct='%.2f %%')
-# Pass in a list of numeric values, labels of each category, colors of each category, and a string of how to format the percentages
-
-plt.title('Foot Preference of FIFA Players')
+plt.title('Overall Club Scores')
+plt.ylabel('FIFA Team Comparison')
 
 plt.show()

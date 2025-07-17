@@ -372,15 +372,61 @@ import pandas as pd
 
 fifa = pd.read_csv('./data/fifa_data.csv')
 
-plt.figure(figsize=(8,5))
-
-left = fifa.loc[fifa['Preferred Foot'] == 'Left'].count()[0]
-right = fifa.loc[fifa['Preferred Foot'] == 'Right'].count()[0]
+left = fifa.loc[fifa['Preferred Foot'] == 'Left'].count().iloc[0]
+right = fifa.loc[fifa['Preferred Foot'] == 'Right'].count().iloc[0]
 
 plt.pie([left, right], labels=['Left', 'Right'], colors=['#ff0000', '#00ffff'], autopct='%.2f %%')
 # Pass in a list of numeric values, labels of each category, colors of each category, and a string of how to format the percentages
 
 plt.title('Foot Preference of FIFA Players')
+
+plt.show()
+```
+
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+fifa = pd.read_csv('./data/fifa_data.csv')
+
+plt.style.use('bmh') # default styles to use https://matplotlib.org/3.1.0/gallery/style_sheets/style_sheets_reference.html
+
+fifa["Weight"] = [int(x.strip('lbs')) if type(x)==str else x for x in fifa["Weight"]]
+
+light = fifa.loc[fifa["Weight"] < 125].count().iloc[0]
+light_medium = fifa.loc[(fifa["Weight"] >= 125) & (fifa["Weight"] < 150)].count().iloc[0]
+medium = fifa.loc[(fifa["Weight"] >= 150) & (fifa["Weight"] < 175)].count().iloc[0]
+heavy_medium = fifa.loc[(fifa["Weight"] >= 175) & (fifa["Weight"] < 200)].count().iloc[0]
+heavy = fifa.loc[fifa["Weight"] >= 200].count().iloc[0]
+
+weights = [light, light_medium, medium, heavy_medium, heavy]
+labels = ['Light', 'Light Medium', 'Medium', 'Heavy Medium', 'Heavy']
+explode = (.4,.1,0,0,.4)
+
+plt.pie(weights, labels=labels, autopct='%.2f %%', pctdistance=0.8, explode=explode) # pctdistance = percentage distance, explode = spaces out the sections
+plt.title('Player Weights (in lbs) by Category')
+plt.show()
+```
+
+#### Box and Whiskers (fifa)
+```python
+import matplotlib.pyplot as plt
+import pandas as pd
+
+fifa = pd.read_csv('./data/fifa_data.csv')
+
+barcelona = fifa.loc[fifa["Club"] == 'FC Barcelona']['Overall']
+madrid = fifa.loc[fifa["Club"] == 'Real Madrid']['Overall']
+revs = fifa.loc[fifa["Club"] == 'New England Revolution']['Overall']
+labels = ['FC Barcelona', 'Real Madrid', 'New England Revolution']
+
+boxes = plt.boxplot([barcelona, madrid, revs], tick_labels=labels, patch_artist=True, medianprops={'linewidth': 2}) # x needs to be a list of integer lists
+for box in boxes['boxes']:
+	box.set(color='#4286f4', linewidth=2) # set edge color
+	box.set(facecolor='#e0e0e0') # change the inside of the box
+
+plt.title('Overall Club Scores')
+plt.ylabel('FIFA Team Comparison')
 
 plt.show()
 ```
