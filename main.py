@@ -1,19 +1,35 @@
 import matplotlib.pyplot as plt
-import pandas as pd
+import numpy as np
+import math
 
-fifa = pd.read_csv('./data/fifa_data.csv')
+# Get the angles from 0 to 2 pie (360 degree) in narray object
+X = np.arange(0, math.pi*2, 0.05)
 
-barcelona = fifa.loc[fifa["Club"] == 'FC Barcelona']['Overall']
-madrid = fifa.loc[fifa["Club"] == 'Real Madrid']['Overall']
-revs = fifa.loc[fifa["Club"] == 'New England Revolution']['Overall']
-labels = ['FC Barcelona', 'Real Madrid', 'New England Revolution']
+# Using built-in trigonometric function we can directly plot
+# the given cosine wave for the given angles
+Y1 = np.sin(X)
+Y2 = np.cos(X)
+Y3 = np.tan(X)
+Y4 = np.tanh(X)
 
-boxes = plt.boxplot([barcelona, madrid, revs], tick_labels=labels, patch_artist=True, medianprops={'linewidth': 2}) # x needs to be a list of integer lists
-for box in boxes['boxes']:
-	box.set(color='#4286f4', linewidth=2) # set edge color
-	box.set(facecolor='#e0e0e0') # change the inside of the box
+# Initialise the subplot function using number of rows and columns
+figure, axis = plt.subplots(2, 2)
 
-plt.title('Overall Club Scores')
-plt.ylabel('FIFA Team Comparison')
+# For Sine Function
+axis[0, 0].plot(X, Y1)
+axis[0, 0].set_title("Sine Function")
 
+# For Cosine Function
+axis[0, 1].plot(X, Y2)
+axis[0, 1].set_title("Cosine Function")
+
+# For Tangent Function
+axis[1, 0].plot(X, Y3)
+axis[1, 0].set_title("Tangent Function")
+
+# For Tanh Function
+axis[1, 1].plot(X, Y4)
+axis[1, 1].set_title("Tanh Function")
+
+# Combine all the operations and display
 plt.show()

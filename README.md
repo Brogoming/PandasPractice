@@ -62,7 +62,6 @@ coffee.index = coffee.Day # reassigns our index column
 ### Filtering Data
 
 **.query()**
-
 ```python
 import pandas as pd
 
@@ -134,7 +133,6 @@ print(bios_new.head())
 ### Merging and Concatenating
 
 **.merge(), .concat()**
-
 ```python
 import pandas as pd
 
